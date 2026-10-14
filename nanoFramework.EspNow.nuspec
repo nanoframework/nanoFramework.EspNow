@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>nanoFramework.EspNow</id>
+    <version>$version$</version>
+    <title>nanoFramework.EspNow</title>
+    <authors>nanoFramework</authors>
+    <owners>nanoFramework</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.md</license>
+    <releaseNotes>
+    </releaseNotes>
+    <readme>docs\README.md</readme>
+    <developmentDependency>false</developmentDependency>
+    <projectUrl>https://github.com/nanoframework/nanoFramework.EspNow</projectUrl>
+    <icon>images\nf-logo.png</icon>
+    <repository type="git" url="https://github.com/nanoframework/nanoFramework.EspNow" commit="$commit$" />
+    <copyright>Copyright (c) .NET Foundation and Contributors</copyright>
+    <description>This package includes the nanoFramework.EspNow assembly for nanoFramework C# projects.
+This package requires a target with nanoFramework.EspNow native contract hash $nativeContractHash$.</description>
+    <tags>nanoFramework C# csharp netmf netnf espnow nanoFramework.EspNow nfnc-$nativeContractHash$</tags>
+    <dependencies>
+      <group targetFramework=".NETnanoFramework1.0">
+        <dependency id="nanoFramework.CoreLibrary" version="2.0.0-preview.63" />
+        <dependency id="nanoFramework.Runtime.Events" version="2.0.0-preview.17" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="nanoFramework.EspNow\bin\Release\nanoFramework.EspNow.dll" target="lib\netnano1.0\nanoFramework.EspNow.dll" />
+    <file src="nanoFramework.EspNow\bin\Release\nanoFramework.EspNow.pdb" target="lib\netnano1.0\nanoFramework.EspNow.pdb" />
+    <file src="nanoFramework.EspNow\bin\Release\nanoFramework.EspNow.pdbx" target="lib\netnano1.0\nanoFramework.EspNow.pdbx" />
+    <file src="nanoFramework.EspNow\bin\Release\nanoFramework.EspNow.pe" target="lib\netnano1.0\nanoFramework.EspNow.pe" />
+    <file src="nanoFramework.EspNow\bin\Release\nanoFramework.EspNow.xml" target="lib\netnano1.0\nanoFramework.EspNow.xml" />
+    <file src="assets\readme.txt" target="" />
+    <file src="README.md" target="docs\" />
+    <file src="assets\nf-logo.png" target="images" />
+    <file src="LICENSE.md" target="" />
+  </files>
+</package>
