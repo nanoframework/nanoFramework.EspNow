@@ -1,0 +1,95 @@
+# Copyright (c) .NET Foundation and Contributors
+# See LICENSE file in the project root for full license information.
+
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+      - release-*
+
+  paths:
+    exclude:
+      - .gitignore
+      - CHANGELOG.md
+      - LICENSE.md
+      - README.md
+      - NuGet.Config
+      - assets/*
+      - .github/*
+
+# PR always trigger build
+pr:
+  autoCancel: true
+
+# add nf-tools repo to resources (for Azure Pipelines templates)
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: nanoframework/nf-tools
+      endpoint: nanoframework
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: sign-client-credentials
+  - name: DOTNET_NOLOGO
+    value: true  
+  - name: nugetPackageName
+    value: 'nanoFramework.EspNow'
+    
+jobs:
+
+##############################
+- job: Build_Library
+  condition: >-
+    and(
+      not(startsWith(variables['Build.SourceBranch'], 'refs/tags/v')),
+      or(
+        eq(variables['UPDATE_DEPENDENTS'], 'false'),
+        eq(variables['StartReleaseCandidate'], 'true')
+      )
+    )
+  pool:
+    vmImage: 'windows-latest'
+
+  variables:
+    - group: sign-client-credentials
+    - name: buildPlatform
+      value: 'Any CPU'  
+    - name: buildConfiguration
+      value: 'Release'
+    - name: solution
+      value: 'nanoFramework.EspNow.sln'
+
+  steps:
+  
+  # step from template @ nf-tools repo
+  # all build, update and publish steps
+  - template: azure-pipelines-templates/class-lib-build.yml@templates
+    parameters:
+      sonarCloudProject: 'nanoframework_nanoFramework.EspNow'
+
+##################################
+# report build failure to Discord
+- job: Report_Build_Failure
+  dependsOn:
+    - Build_Library
+  condition: failed('Build_Library')
+
+  pool:
+    vmImage: 'windows-latest'
+
+  steps:
+  
+  - checkout: self
+
+  # step from template @ nf-tools repo
+  # report error
+  - template: azure-pipelines-templates/discord-webhook-task.yml@templates  
+    parameters:
+      status: 'failure'
+      webhookUrl: '$(DiscordWebhook)'
+      message: ''
